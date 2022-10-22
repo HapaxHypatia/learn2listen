@@ -17,13 +17,13 @@ function App() {
 
 	const updateState = (e) => {
 		const val = e.target.value;
-		setSearchTerm(val);
+		setSearchTerm(val)
 	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		const top_results = clean_data.filter(item=> item.Title.includes(searchTerm))
-		const next_results = clean_data.filter(item=> item.Description.includes(searchTerm))
+		const top_results = clean_data.filter((item)=> item.Title.toLowerCase().includes(searchTerm.toLowerCase()))
+		const next_results = clean_data.filter(item=> item.Description.toLowerCase().includes(searchTerm))
 		setResults(top_results.concat(next_results))
 	}
 
@@ -35,7 +35,7 @@ function App() {
 		  </form>
 		  <div id={"resultsList"}>
 				{results.map((r)=>
-					<div key={String(r.URL)} className={'result'}>
+					<div key={String(r.URL)+String(r.Page_title)} className={'result'}>
 						<img src={r.Image}/>
 						<a className={'result-link'} target={"_blank"} href={String(r.URL)}>{r.Title}</a>
 						<p className={'level'}>{r.Level}</p>
