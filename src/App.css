@@ -3,8 +3,13 @@
 }
 
 #searchForm{
+  padding-left: 20px;
   background-color: darkslategray;
   line-height: 50px;
+}
+
+#searchBox{
+  width: 300px;
 }
 .result{
   border:solid 1px cornflowerblue;

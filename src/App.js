@@ -7,12 +7,12 @@ function App() {
 	const [results, setResults] = useState([])
 	const seenURLs = []
 	const clean_data = data.filter(function(currentObject) {
-    if (currentObject.URL in seenURLs) {
-        return false;
-    } else {
-        seenURLs[currentObject.URL] = true;
-        return true;
-    }
+		if (currentObject.URL in seenURLs) {
+			return false;
+		} else {
+			seenURLs[currentObject.URL] = true;
+			return true;
+		}
 })
 
 	const updateState = (e) => {
@@ -30,16 +30,16 @@ function App() {
   return (
 	  <>
 		  <form id={'searchForm'} onSubmit={handleSubmit}>
-					<input id='searchBox' value={searchTerm ?? ""} onChange={updateState} placeholder="Search listening resources" />
+					<input id='searchBox'value={searchTerm ?? ""} onChange={updateState} placeholder="Search listening resources" />
 					<button>Search</button>
 		  </form>
 		  <div id={"resultsList"}>
 				{results.map((r)=>
-					<div key={String(r.URL)+String(r.Page_title)} className={'result'}>
+					<div key={r.URL+r.Current_time} className={'result'}>
 						<img src={r.Image}/>
 						<a className={'result-link'} target={"_blank"} href={String(r.URL)}>{r.Title}</a>
 						<p className={'level'}>{r.Level}</p>
-						<p>{r.Page_title}</p>
+						<a href={r.Page_URL}>Source: {r.Page_title}</a>
 						<p>{r.Description}</p>
 					</div>
 					)}
