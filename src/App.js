@@ -1,6 +1,6 @@
 import './App.css';
 import {useState} from "react";
-import data from '../public/data.json'
+import data from './data.json'
 
 function App() {
 	const [searchTerm, setSearchTerm] = useState("")
