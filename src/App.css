@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  align-items: center;
 }
 
 #searchForm{
@@ -29,4 +30,25 @@
 
 .result-link{
   font-size: larger;
+}
+
+h2 {
+  text-align: center;
+}
+#sitesList{
+  width: 90%;
+  text-align: center;
+}
+
+/*TODO changed these from li to div*/
+#sitesList span{
+  display: inline;
+  margin-right: 15px;
+  line-height: 40px;
+  padding: 5px;
+  background-color: lightslategrey;
+}
+#sitesList span a {
+  text-decoration: none;
+  color: black;
 }
