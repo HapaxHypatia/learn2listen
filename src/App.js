@@ -26,20 +26,24 @@ function App() {
 }
 
 	)
-	const updateState = (e) => {
-		const val = e.target.value;
-		setSearchTerm(val)
+
+	const getResults= (e)=> {
+		e.preventDefault()
 		const top_results = clean_data.filter((item)=> item.Title.toLowerCase().includes(searchTerm.toLowerCase()))
 		const next_results = clean_data.filter(item=> item.Description.toLowerCase().includes(searchTerm))
 		setResults(top_results.concat(next_results))
-
+	}
+	const updateState = (e) => {
+		const val = e.target.value;
+		setSearchTerm(val)
 	}
 
   return (
 	  <>
 
-		  <form id={'searchForm'} >
-			  <input id='searchBox'value={searchTerm ?? ""} onChange={updateState} placeholder="Type to search listening resources" />
+		  <form id={'searchForm'} onSubmit={getResults}>
+			  <input id='searchBox'value={searchTerm ?? ""} onChange={updateState} placeholder="Search listening resources" />
+			  <button type={"submit"}>Search</button>
 		  </form>
 		  <div id={"resultsList"}>
 				{results.map((r)=>
@@ -48,6 +52,7 @@ function App() {
 						<br/>
 						<a className={'result-link'} target={"_blank"} href={String(r.URL)}>{r.Title}</a>
 						{r.Level && <p className={'level'}>{r.Level}</p>}
+						<br/>
 						<a href={r.Page_URL}>Source: {r.Page_title}</a>
 						<br/>
 						<p>{r.Description}</p>
