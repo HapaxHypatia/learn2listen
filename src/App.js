@@ -34,6 +34,7 @@ function App() {
 
 	const getResults= (e)=> {
 		e.preventDefault()
+		setPaginate(10)
 		const top_results = clean_data.filter((item)=> item.Title.toLowerCase().includes(searchTerm.toLowerCase()))
 		const next_results = clean_data.filter(item=> item.Description.toLowerCase().includes(searchTerm))
 		setResults(top_results.concat(next_results))
@@ -54,17 +55,21 @@ function App() {
 					.map((r)=><Result r={r}></Result>
 					)}
 		  </div>
-		  {results.length>0? <button id={'loadMore'} onClick={load_more}>Load More</button>:
+		  {results.length<1?
 			  <>
-				  <h2>Search {clean_data.length} audio and video resources from {sites.length} sites!</h2>
-		  			<div id={'sitesList'}>
-			  			{sites.map((item)=>
-				  		<span><a href={item.Page_URL}>{item.Page_title}</a></span>
-			  			)
-			  			}
-		  			</div>
-			  </>}
-		  </>);
+				<h2>Search {clean_data.length} audio and video resources from {sites.length} sites!</h2>
+				<div id={'sitesList'}>
+					{sites.map((item)=>
+					<span><a href={item.Page_URL}>{item.Page_title}</a></span>
+					)
+					}
+				</div>
+			  </>: <></>
+		  }
+		  {results.length>paginate?
+			  <button id={'loadMore'} onClick={load_more}>Load More</button> :<></>
+		  }
+	  </>);
 }
 
 export default App;
