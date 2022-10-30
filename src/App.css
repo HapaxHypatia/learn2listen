@@ -12,10 +12,15 @@
 #searchBox{
   width: 300px;
 }
+
+#resultsList{
+  align-items: center;
+}
 .result{
   border:solid 1px cornflowerblue;
   border-radius: 5px;
   margin: 10px;
+  margin-left: 50px;
   max-width: 80%;
   padding: 10px;
 }
@@ -35,12 +40,15 @@
 h2 {
   text-align: center;
 }
+
+#loadMore{
+}
+
 #sitesList{
   width: 90%;
   text-align: center;
 }
 
-/*TODO changed these from li to div*/
 #sitesList span{
   display: inline;
   margin-right: 15px;

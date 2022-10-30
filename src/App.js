@@ -1,11 +1,13 @@
 import './App.css';
 import {useState} from "react";
 import data from './data.json'
+import Result from "./components/result";
 
 
 function App() {
 	const [searchTerm, setSearchTerm] = useState("")
 	const [results, setResults] = useState([])
+	const [paginate, setPaginate] = useState(10)
 	const seenURLs = []
 	const clean_data = data.filter(function(currentObject) {
 		if (currentObject.URL in seenURLs) {
@@ -23,9 +25,12 @@ function App() {
 			seenSites[currentObject.Page_title] = true;
 			return true;
 		}
-}
+	})
 
-	)
+	const load_more = (event) => {
+	  setPaginate((prevValue) => prevValue + 8);
+	};
+
 
 	const getResults= (e)=> {
 		e.preventDefault()
@@ -37,7 +42,6 @@ function App() {
 		const val = e.target.value;
 		setSearchTerm(val)
 	}
-
   return (
 	  <>
 
@@ -46,26 +50,20 @@ function App() {
 			  <button type={"submit"}>Search</button>
 		  </form>
 		  <div id={"resultsList"}>
-				{results.map((r)=>
-					<div key={Math.random()} className={'result'}>
-						<img src={r.Image}/>
-						<br/>
-						<a className={'result-link'} target={"_blank"} href={String(r.URL)}>{r.Title}</a>
-						{r.Level && <p className={'level'}>{r.Level}</p>}
-						<br/>
-						<a href={r.Page_URL}>Source: {r.Page_title}</a>
-						<br/>
-						<p>{r.Description}</p>
-					</div>
+				{results.slice(0, paginate)
+					.map((r)=><Result r={r}></Result>
 					)}
 		  </div>
-		  <h2>Search {clean_data.length} audio and video resources from {sites.length} sites!</h2>
-		  <div id={'sitesList'}>
-			  {sites.map((item)=>
-				  <span><a href={item.Page_URL}>{item.Page_title}</a></span>
-			  )
-			  }
-		  </div>
+		  {results.length>0? <button id={'loadMore'} onClick={load_more}>Load More</button>:
+			  <>
+				  <h2>Search {clean_data.length} audio and video resources from {sites.length} sites!</h2>
+		  			<div id={'sitesList'}>
+			  			{sites.map((item)=>
+				  		<span><a href={item.Page_URL}>{item.Page_title}</a></span>
+			  			)
+			  			}
+		  			</div>
+			  </>}
 		  </>);
 }
 
