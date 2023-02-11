@@ -3,60 +3,34 @@
   align-items: center;
 }
 
-#searchForm{
-  padding-left: 20px;
-  background-color: darkslategray;
-  line-height: 50px;
-}
-
-#searchBox{
-  width: 300px;
-}
-
-#resultsList{
-  align-items: center;
-}
-.result{
-  border:solid 1px cornflowerblue;
-  border-radius: 5px;
-  margin: 10px;
-  margin-left: 50px;
-  max-width: 80%;
-  padding: 10px;
-}
-
-.level{
-  background-color: darkslategray;
-  color: white;
-  width: min-content;
-  padding: 5px;
-  border-radius: 5px;
-}
-
-.result-link{
-  font-size: larger;
-}
 
 h2 {
   text-align: center;
 }
 
-#loadMore{
-}
-
-#sitesList{
-  width: 90%;
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  max-width: 80%;
+  float: left;
+  height: 400px;
+  padding: 20px;
+  margin: 10px;
   text-align: center;
 }
 
-#sitesList span{
-  display: inline;
-  margin-right: 15px;
-  line-height: 40px;
-  padding: 5px;
-  background-color: lightslategrey;
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
-#sitesList span a {
-  text-decoration: none;
-  color: black;
+
+/* Add some padding inside the card container */
+.container {
+  padding: 10px;
+}
+
+.main{
+  align-items: center;
+/*  TODO centring doesn't work*/
 }
