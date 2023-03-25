@@ -8,8 +8,8 @@ import Nav from "./components/nav";
 
 function App() {
   return (
-	  <>
-	  <Nav/>
+		<div id={'container'}>
+		<Nav/>
 		<Routes>
 			<Route path="/" element={<Home />} />
 			{/*<Route path="login" element={<Login />} />*/}
@@ -19,7 +19,7 @@ function App() {
 			{/*<Route path="signup" element={<SignUp />} />*/}
 			<Route path="*" element={<Navigate to="/" replace />} />
 		</Routes>
-	  </>
+		</div>
 );
 }
 

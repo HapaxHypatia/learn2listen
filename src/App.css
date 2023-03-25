@@ -8,6 +8,28 @@ h2 {
   text-align: center;
 }
 
+#container {
+  width: 900px;
+  display: grid;
+}
+
+body {
+  /*border: solid red 3px;*/
+  background-color: lightslategrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.main {
+  /*border: solid yellow 3px;*/
+  justify-content: center;
+  background-color: white;
+  padding-bottom: 50px;
+
+}
+
 .card {
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -18,6 +40,7 @@ h2 {
   padding: 20px;
   margin: 10px;
   text-align: center;
+  background-color: white;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -29,8 +52,32 @@ h2 {
 .container {
   padding: 10px;
 }
+nav {
+  /*border: solid green 3px;*/
+  /*background-color: white;*/
+}
 
-.main{
-  align-items: center;
-/*  TODO centring doesn't work*/
+
+nav a {
+  /*border: solid white 1px;*/
+  display: inline-block;
+  float: left;
+  background-color: lightsteelblue;
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  margin-top: 5px;
+  min-width: 75px;
+  text-align: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+
+}
+
+nav a:hover {
+  background-color: lightgray;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+
 }

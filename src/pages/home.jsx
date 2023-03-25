@@ -6,7 +6,6 @@ import transcribe from '../img/transcribe.jpg'
 function Home() {
 	return (
 		<div className={'main'}>
-			<p>Home</p>
 			<Card w={300}
 				  t={'Transcribe'}
 				  s={transcribe}
