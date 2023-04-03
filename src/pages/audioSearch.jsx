@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import data from "../data.json";
+import data from "../ytdata.json";
 import Result from "../components/result";
 import '../App.css'
 import './audioSearch.css'
@@ -64,18 +64,21 @@ function AudioSearch() {
 	const search= (e)=> {
 		e.preventDefault()
 		let hits = []
-		for (let item of clean_data) {
+		for (let item of data) {
+
 			let count = 0
-			let titlewords = item.Title.split(" ")
+			let titlewords = item.title.split(" ")
 			for (let word of titlewords) {
 				if (word.toLowerCase() === searchTerm) {
 					count = count + 2
 				}
 			}
-			let descwords = item.Description.split(" ")
-			for (let word of descwords) {
-				if (word.toLowerCase() === searchTerm) {
-					count++
+			if(item.description){
+				let descwords = item.description.split(" ")
+				for (let word of descwords) {
+					if (word.toLowerCase() === searchTerm) {
+						count++
+					}
 				}
 			}
 			if (count !== 0) {
@@ -85,8 +88,6 @@ function AudioSearch() {
 				}
 				hits.push(item)
 			}
-
-
 			hits.sort((a, b) => parseInt(b.count) - parseInt(a.count))
 			setResults(hits)
 		}

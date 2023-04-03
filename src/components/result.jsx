@@ -8,10 +8,10 @@ function Result(r) {
 	return (
 		<div key={Math.random()} className={'result-item'}>
 			<div className={'result-container'} >
-				<a className={'result-title'} target={"_blank"} href={String(entry.URL)}>{entry.Title}</a>
+				<a className={'result-title'} target={"_blank"} href={String(entry.link)}>{entry.title}</a>
 				{level? <span className={'level'}>{level}</span> : <></>}
-				{entry.Image? <img className={'result-image'} alt={""} src={entry.Image} width={'200px'}/> : <></>}
-				{entry.Description? <p>{entry.Description.slice(0,750)}...</p>: <></>}
+				{entry.image? <img className={'result-image'} alt={""} src={entry.image} width={'200px'}/> : <></>}
+				{entry.description? <p>{entry.description.slice(0,750)}...</p>: <></>}
 			</div>
 			<p><a href={entry.Page_URL}>Go to website: {entry.Page_title}</a></p>
 		</div>
