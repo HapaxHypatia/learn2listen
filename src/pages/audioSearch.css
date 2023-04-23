@@ -7,7 +7,6 @@
 
 #searchBox{
   width: 300px;
-
 }
 
 .result-item{
@@ -26,10 +25,14 @@
 
 .result-container {
   margin-bottom: 10px;
-  display: grid;
+  min-height: 200px;
 }
 
 .result-image{
+  float: left;
+  margin-bottom: 50px;
+  margin-right: 10px;
+  margin-top: 20px  ;
 }
 
 .level{
@@ -38,17 +41,26 @@
   width: min-content;
   padding: 5px;
   border-radius: 5px;
-  margin: 10px;
+  margin: 30px;
+  padding: 10px;
+  float: left;
 }
 
 .result-title{
   font-size: x-large;
   text-decoration: none;
   color: darkcyan;
+  margin: auto;
+  padding: 10px;
+  display: block;
 }
 
 .result-title:hover{
 
+}
+.result-item p{
+  text-align: left;
+  padding: 20px;
 }
 
 #loadMore{
@@ -57,20 +69,4 @@
   height: 50px;
   margin: 50px;
   width: 150px;
-}
-
-#sitesList{
-  text-align: center;
-
-}
-
-#sitesList span{
-  margin-right: 15px;
-  line-height: 40px;
-  padding: 5px;
-  background-color: lightslategrey;
-}
-#sitesList span a {
-  text-decoration: none;
-  color: black;
 }

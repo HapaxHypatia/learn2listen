@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import data from "../ytdata.json";
+import data from "../data.json";
 import Result from "../components/result";
 import '../App.css'
 import './audioSearch.css'
@@ -8,77 +8,75 @@ function AudioSearch() {
     const [searchTerm, setSearchTerm] = useState("")
 	const [results, setResults] = useState([])
 	const [paginate, setPaginate] = useState(10)
-	const seenURLs = []
-	const clean_data = data.filter(function(currentObject) {
-		if (currentObject.URL in seenURLs) {
-			return false;
-		} else {
-			seenURLs[currentObject.URL] = true;
-			return true;
-		}
-})
-	const seenSites = []
-	const sites = clean_data.filter(function(currentObject) {
-		if (currentObject.Page_title in seenSites) {
-			return false;
-		} else {
-			seenSites[currentObject.Page_title] = true;
-			return true;
-		}
-	})
-
 	const load_more = () => {
 	  setPaginate((prevValue) => prevValue + 8);
 	};
 
-	//TODO remove links to whole websites instead of items
-	//https://www.lawlessfrench.com/products/fluentu-french-videos/
-	// https://www.lawlessfrench.com/products/lawless-french-immersion/
-	// https://www.lawlessfrench.com/speaking/conversational-french/
-
 
 	function getLevel(item){
 		const levels = {
-        beginner: ['A1', 'A2', 'beginner', 'beginning', 'débutant'],
-        intermediate: ['B1', 'B2', 'intermediate', 'intermédiaire'],
-        advanced: ['C1', 'C2', 'advanced', 'avancé']
+        A1: ['a1'],
+		A2: ['a2'],
+		beginner: ['beginner', 'beginning', 'débutant', 'debutant','introductory'],
+		B1: ['b1'],
+		B2: ['b2'],
+        intermediate: ['intermediate', 'intermédiaire', 'intermediaire'],
+		C1:['c1'],
+		C2: ['c2'],
+        advanced: ['advanced', 'avancé']
     	}
-		for (let list of Object.keys(levels)){
-			console.log(list)
-			for (let term of levels[list]){
+		for (let level of Object.keys(levels)){
+			console.log(level)
+			for (let term of levels[level]){
 				for (let val of Object.values(item)){
 					if (typeof(val)=="string"){
-						if (val.includes(term)){
-							return term
+						if (val.toLowerCase().includes(term)){
+							return level
 						}
 					}
 
 				}
 			}
 		}
-
-
 	}
+
+	function normalize(text){
+		return text.toLowerCase()
+			.replace(/[àâ]/g,"a")
+			.replace(/[éèêë]/g, "e")
+			.replace(/[îï]/g,'i')
+			.replace('ô', 'o')
+			.replace('œ', 'oe')
+			.replace(/[ùûü]/g, 'u')
+		}
 
 	//Search Function
 	const search= (e)=> {
+		console.log(searchTerm)
 		e.preventDefault()
 		let hits = []
+		console.log(data.length)
 		for (let item of data) {
-
+			console.log(item.channel)
 			let count = 0
 			let titlewords = item.title.split(" ")
 			for (let word of titlewords) {
-				if (word.toLowerCase() === searchTerm) {
+				if (normalize(word) === searchTerm) {
+					count = count + 3
+				}
+				if (normalize(word).includes(searchTerm)) {
 					count = count + 2
 				}
 			}
 			if(item.description){
 				let descwords = item.description.split(" ")
 				for (let word of descwords) {
-					if (word.toLowerCase() === searchTerm) {
-						count++
-					}
+				if (normalize(word) === searchTerm) {
+					count = count + 2
+				}
+				if (normalize(word).includes(searchTerm)) {
+					count = count + 1
+				}
 				}
 			}
 			if (count !== 0) {
@@ -95,7 +93,8 @@ function AudioSearch() {
 
 	const updateState = (e) => {
 		const val = e.target.value;
-		setSearchTerm(val)
+		let cleanval = normalize(val)
+		setSearchTerm(cleanval)
 	}
 
 	return (
@@ -112,13 +111,7 @@ function AudioSearch() {
 		  </div>
 		  {results.length<1?
 			  <>
-				<h2>Search {clean_data.length} French audio and video resources with one search</h2>
-				{/*<div id={'sitesList'}>*/}
-				{/*	{sites.map((item)=>*/}
-				{/*	<span><a href={item.Page_URL}>{item.Page_title}</a></span>*/}
-				{/*	)*/}
-				{/*	}*/}
-				{/*</div>*/}
+				<h2>Search {data.length} French audio and video resources with one search</h2>
 			  </>: <></>
 		  }
 		  {results.length>paginate?
