@@ -26,7 +26,6 @@ function AudioSearch() {
         advanced: ['advanced', 'avancé']
     	}
 		for (let level of Object.keys(levels)){
-			console.log(level)
 			for (let term of levels[level]){
 				for (let val of Object.values(item)){
 					if (typeof(val)=="string"){
@@ -55,9 +54,7 @@ function AudioSearch() {
 		console.log(searchTerm)
 		e.preventDefault()
 		let hits = []
-		console.log(data.length)
 		for (let item of data) {
-			console.log(item.channel)
 			let count = 0
 			let titlewords = item.title.split(" ")
 			for (let word of titlewords) {
