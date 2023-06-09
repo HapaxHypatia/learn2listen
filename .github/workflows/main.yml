@@ -1,0 +1,23 @@
+on: 
+  push:
+    branches:
+      -production
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
+    - name: Build project
+      run: |
+        npm install
+        npm build
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ftp.hapaxhypatia.com
+        username: ${{ secrets.GG_USERNAME }}
+        password: ${{ secrets.GG_PASSWORD }}
+        local-dir: ./build/
