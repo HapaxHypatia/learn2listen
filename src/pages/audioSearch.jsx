@@ -11,7 +11,7 @@ function AudioSearch() {
 	const load_more = () => {
 	  setPaginate((prevValue) => prevValue + 8);
 	};
-
+	//adding comment to test deployment work flow
 
 	function getLevel(item){
 		const levels = {
@@ -100,17 +100,22 @@ function AudioSearch() {
 			  <input id='searchBox' value={searchTerm ?? ""} onChange={updateState} placeholder="Search listening resources" />
 			  <button type={"submit"}>Search</button>
 		  </form>
-		  <div id={"resultsList"}>
+		  {results.length<1?
+			  <>
+				<h2>Search thousands of French audio and video resources with one search</h2>
+			  </>: <></>
+		  }
+		  {results.length>1?
+			  <>
+			  <div id={"resultsList"}>
 			  {results.length} results found.
 				{results.slice(0, paginate)
 					.map((r)=><Result r={r}></Result>
 					)}
-		  </div>
-		  {results.length<1?
-			  <>
-				<h2>Search {data.length} French audio and video resources with one search</h2>
+			  </div>
 			  </>: <></>
 		  }
+
 		  {results.length>paginate?
 			  <button id={'loadMore'} onClick={load_more}>Load More...</button> :<></>
 		  }
