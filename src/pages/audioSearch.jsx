@@ -5,13 +5,17 @@ import '../App.css'
 import './audioSearch.css'
 
 function AudioSearch() {
+	const [update, setUpdate] = useState('')
     const [searchTerm, setSearchTerm] = useState("")
 	const [results, setResults] = useState([])
 	const [paginate, setPaginate] = useState(10)
 	const load_more = () => {
 	  setPaginate((prevValue) => prevValue + 8);
 	};
-	//adding comment to test deployment work flow
+
+	fetch('https://api.github.com/repos/HapaxHypatia/Learn2Listen/commits?per_page=1')
+  						.then(res => res.json())
+  						.then(res => setUpdate(res[0]['commit']['author']['date']))
 
 	function getLevel(item){
 		const levels = {
@@ -119,6 +123,9 @@ function AudioSearch() {
 		  {results.length>paginate?
 			  <button id={'loadMore'} onClick={load_more}>Load More...</button> :<></>
 		  }
+		  <footer>
+			  <p id={'update'}>Last update {update}</p>
+		  </footer>
 	  </div>
 	);
 }
