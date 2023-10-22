@@ -56,29 +56,39 @@ function AudioSearch() {
 	//Search Function
 	const search= (e)=> {
 		console.log(searchTerm)
+		let term = normalize(searchTerm)
 		e.preventDefault()
 		let hits = []
 		for (let item of data) {
 			let count = 0
 			let titlewords = item.title.split(" ")
 			for (let word of titlewords) {
-				if (normalize(word) === searchTerm) {
+				if (normalize(word) === term) {
 					count = count + 3
 				}
-				if (normalize(word).includes(searchTerm)) {
+				if (normalize(word).includes(term)) {
 					count = count + 2
 				}
 			}
 			if(item.description){
 				let descwords = item.description.split(" ")
 				for (let word of descwords) {
-				if (normalize(word) === searchTerm) {
+				if (normalize(word) === term) {
 					count = count + 2
 				}
-				if (normalize(word).includes(searchTerm)) {
+				if (normalize(word).includes(term)) {
 					count = count + 1
 				}
 				}
+			}
+			if(item.level){
+				if (item.level.includes(term)) {
+					count = count + 10
+				}
+				if (term.includes(item.level)) {
+					count = count + 10
+				}
+
 			}
 			if (count !== 0) {
 				item.count = count
