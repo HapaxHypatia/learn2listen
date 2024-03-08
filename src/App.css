@@ -15,7 +15,7 @@ h2 {
 
 body {
   /*border: solid red 3px;*/
-  background-color: limegreen;
+  background-color: lightslategrey;
   display: flex;
   justify-content: center;
   align-items: center;
