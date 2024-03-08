@@ -6,34 +6,34 @@ import './audioSearch.css'
 
 function AudioSearch() {
 	const [update, setUpdate] = useState('')
-    const [searchTerm, setSearchTerm] = useState("")
+	const [searchTerm, setSearchTerm] = useState("")
 	const [results, setResults] = useState([])
 	const [paginate, setPaginate] = useState(10)
 	const load_more = () => {
-	  setPaginate((prevValue) => prevValue + 8);
+		setPaginate((prevValue) => prevValue + 8);
 	};
 
-	fetch('https://api.github.com/repos/HapaxHypatia/Learn2Listen/commits?per_page=1')
-  						.then(res => res.json())
-  						.then(res => setUpdate(res[0]['commit']['author']['date']))
+	// fetch('https://api.github.com/repos/HapaxHypatia/Learn2Listen/commits?per_page=1')
+	// 	.then(res => res.json())
+	// 	.then(res => setUpdate(res[0]['commit']['author']['date']))
 
-	function getLevel(item){
+	function getLevel(item) {
 		const levels = {
-        A1: ['a1'],
-		A2: ['a2'],
-		beginner: ['beginner', 'beginning', 'débutant', 'debutant','introductory'],
-		B1: ['b1'],
-		B2: ['b2'],
-        intermediate: ['intermediate', 'intermédiaire', 'intermediaire'],
-		C1:['c1'],
-		C2: ['c2'],
-        advanced: ['advanced', 'avancé']
-    	}
-		for (let level of Object.keys(levels)){
-			for (let term of levels[level]){
-				for (let val of Object.values(item)){
-					if (typeof(val)=="string"){
-						if (val.toLowerCase().includes(term)){
+			A1: ['a1'],
+			A2: ['a2'],
+			beginner: ['beginner', 'beginning', 'débutant', 'debutant', 'introductory'],
+			B1: ['b1'],
+			B2: ['b2'],
+			intermediate: ['intermediate', 'intermédiaire', 'intermediaire'],
+			C1: ['c1'],
+			C2: ['c2'],
+			advanced: ['advanced', 'avancé']
+		}
+		for (let level of Object.keys(levels)) {
+			for (let term of levels[level]) {
+				for (let val of Object.values(item)) {
+					if (typeof (val) == "string") {
+						if (val.toLowerCase().includes(term)) {
 							return level
 						}
 					}
@@ -43,64 +43,71 @@ function AudioSearch() {
 		}
 	}
 
-	function normalize(text){
+	function normalize(text) {
 		return text.toLowerCase()
-			.replace(/[àâ]/g,"a")
+			.replace(/[àâ]/g, "a")
 			.replace(/[éèêë]/g, "e")
-			.replace(/[îï]/g,'i')
+			.replace(/[îï]/g, 'i')
 			.replace('ô', 'o')
 			.replace('œ', 'oe')
 			.replace(/[ùûü]/g, 'u')
-		}
+	}
 
 	//Search Function
-	const search= (e)=> {
-		console.log(searchTerm)
+	const search = (e) => {
 		let term = normalize(searchTerm)
+		console.log(term)
 		e.preventDefault()
 		let hits = []
 		for (let item of data) {
+			let title = normalize(item.title)
 			let count = 0
-			let titlewords = item.title.split(" ")
-			for (let word of titlewords) {
-				if (normalize(word) === term) {
-					count = count + 3
-				}
-				if (normalize(word).includes(term)) {
-					count = count + 2
-				}
-			}
-			if(item.description){
-				let descwords = item.description.split(" ")
-				for (let word of descwords) {
-				if (normalize(word) === term) {
-					count = count + 2
-				}
-				if (normalize(word).includes(term)) {
-					count = count + 1
-				}
-				}
-			}
-			if(item.level){
-				if (item.level.includes(term)) {
+			if (item.level) {
+				if (normalize(item.level) === term) {
 					count = count + 10
+					continue
 				}
 				if (term.includes(item.level)) {
-					count = count + 10
+					count = count + 2
 				}
+			}
 
+			let titlewords = title.split(" ")
+			for (let word of titlewords) {
+				if (word === term) {
+					count = count + 3
+				}
+				if (word.includes(term)) {
+					count = count + 2
+				}
+				if (term.includes(word)) {
+					count = count + 2
+				}
+			}
+			if (item.description) {
+				let descwords = item.description.split(" ")
+				for (let word of descwords) {
+					if (word === term) {
+						count = count + 2
+					}
+					if (word.includes(term)) {
+						count = count++
+					}
+				}
 			}
 			if (count !== 0) {
-				item.count = count
-				if(!item.Level){
-					item.Level = getLevel(item)
-				}
-				hits.push(item)
+			item.count = count
+			if (!item.Level) {
+				item.Level = getLevel(item)
 			}
-			hits.sort((a, b) => parseInt(b.count) - parseInt(a.count))
-			setResults(hits)
+			hits.push(item)
 		}
+
+		}
+		hits.sort((a, b) => parseInt(b.count) - parseInt(a.count))
+		setResults(hits)
 	}
+
 
 	const updateState = (e) => {
 		const val = e.target.value;
