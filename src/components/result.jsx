@@ -3,7 +3,8 @@ import default_img from '../img/default.png';
 
 function Result(r) {
 	const entry = r.r
-	const level = entry.Level
+	const level = entry.level
+	console.log(level)
 	return (
 		<div key={Math.random()} className={'result-item'}>
 			<div className={'result-container'} >

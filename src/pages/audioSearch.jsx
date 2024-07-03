@@ -1,11 +1,43 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import data from "../data.json";
 import Result from "../components/result";
 import '../App.css'
 import './audioSearch.css'
 
+//Add level to entries
+const levels = [
+	{name:"Beginner", descriptors: ['beginner', 'beginning', 'débutant', 'debutant', 'introductory']},
+	{name:"Intermediate", descriptors: ['intermediate', 'intermédiaire', 'intermediaire']},
+	{name:"Advanced", descriptors: ['advanced', 'avancé']},
+	{name:"A1", descriptors: ['a1']},
+	{name:"A2", descriptors: ['a2']},
+	{name:"B1", descriptors: ['b1']},
+	{name:"B2", descriptors: ['b2']},
+	{name:"C1", descriptors: ['c1']},
+	{name:"C2", descriptors: ['c2']}
+]
+
+for (let item of data) {
+	if (item.level ==="") {
+		for (let level of (levels)) {
+			for (let descriptor of level.descriptors) {
+				if (typeof (item) == "string") {
+					if (item.toLowerCase().includes(descriptor)) {
+						data[item].level = level.name
+					}
+				}
+
+			}
+		}
+	}
+}
+
 function AudioSearch() {
-	const [update, setUpdate] = useState('')
+	const [state, setState] = useState({
+		products: data,
+		filters: new Set(),
+	  })
+	// const [update, setUpdate] = useState('')
 	const [searchTerm, setSearchTerm] = useState("")
 	const [results, setResults] = useState([])
 	const [paginate, setPaginate] = useState(10)
@@ -17,31 +49,7 @@ function AudioSearch() {
 	// 	.then(res => res.json())
 	// 	.then(res => setUpdate(res[0]['commit']['author']['date']))
 
-	function getLevel(item) {
-		const levels = {
-			A1: ['a1'],
-			A2: ['a2'],
-			beginner: ['beginner', 'beginning', 'débutant', 'debutant', 'introductory'],
-			B1: ['b1'],
-			B2: ['b2'],
-			intermediate: ['intermediate', 'intermédiaire', 'intermediaire'],
-			C1: ['c1'],
-			C2: ['c2'],
-			advanced: ['advanced', 'avancé']
-		}
-		for (let level of Object.keys(levels)) {
-			for (let term of levels[level]) {
-				for (let val of Object.values(item)) {
-					if (typeof (val) == "string") {
-						if (val.toLowerCase().includes(term)) {
-							return level
-						}
-					}
 
-				}
-			}
-		}
-	}
 
 	function normalize(text) {
 		return text.toLowerCase()
@@ -97,9 +105,6 @@ function AudioSearch() {
 			}
 			if (count !== 0) {
 			item.count = count
-			if (!item.Level) {
-				item.Level = getLevel(item)
-			}
 			hits.push(item)
 		}
 
@@ -107,18 +112,47 @@ function AudioSearch() {
 		hits.sort((a, b) => parseInt(b.count) - parseInt(a.count))
 		setResults(hits)
 	}
+	//Search filters
+	function onFilterChange(){
 
+	}
 
-	const updateState = (e) => {
+	const updateSearchBox = (e) => {
 		const val = e.target.value;
 		let cleanval = normalize(val)
 		setSearchTerm(cleanval)
 	}
+	//TODO set up search filters
+	//TODO fix photos- many are not showing (partajon, youtube)
+	//TODO Francais facile missing titles
 
+	useCallback(event => {
+		setState(previousState => {
+		  let filters = new Set(previousState.filters)
+		  let results = results
+
+		  if (event.target.checked) {
+			filters.add(event.target.value)
+		  } else {
+			filters.delete(event.target.value)
+		  }
+
+		  if (filters.size) {
+			results = results.filter(result => {
+			  return filters.has(result.level)
+			})
+		  }
+
+		  return {
+			filters,
+			results,
+		  }
+		})
+	  }, [setState])
 	return (
 	  <div className={'main'}>
 		  <form id={'searchForm'} onSubmit={search}>
-			  <input id='searchBox' value={searchTerm ?? ""} onChange={updateState} placeholder="Search listening resources" />
+			  <input id='searchBox' value={searchTerm ?? ""} onChange={updateSearchBox} placeholder="Search listening resources" />
 			  <button type={"submit"}>Search</button>
 		  </form>
 		  {results.length<1?
@@ -128,6 +162,28 @@ function AudioSearch() {
 		  }
 		  {results.length>1?
 			  <>
+			<section
+				className="filters"
+				aria-labelledby="filters-header">
+				<header id="filters-header">
+				{'Filters'}
+				</header>
+
+				<ul>
+					{levels.map(level => (
+						<li key={level.name}>
+						<label>
+						<input
+						onChange={onFilterChange}
+						type="checkbox"
+						value={level.name} />
+						{level.name}
+						</label>
+						</li>
+					))}
+					</ul>
+			</section>
+
 			  <div id={"resultsList"}>
 			  {results.length} results found.
 				{results.slice(0, paginate)
@@ -140,9 +196,6 @@ function AudioSearch() {
 		  {results.length>paginate?
 			  <button id={'loadMore'} onClick={load_more}>Load More...</button> :<></>
 		  }
-		  <footer>
-			  <p id={'update'}>Last update {update}</p>
-		  </footer>
 	  </div>
 	);
 }
